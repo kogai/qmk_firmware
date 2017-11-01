@@ -11,7 +11,9 @@ enum custom_keycodes {
   PLACEHOLDER = SAFE_RANGE, // can always be here
   EPRM,
   VRSN,
-  RGB_SLD
+  RGB_SLD,
+  AUTOBRACES,
+  AUTOBRACKETS
 };
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
@@ -47,18 +49,18 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
                     KC_QUOTE,   KC_GRAVE,
                                 KC_LEFT,
-        KC_LGUI,    KC_SPACE,   LT(1, KC_LANG2),
+        KC_LGUI,    KC_SPACE,   KC_LANG2,
 
         // right hand
-        KC_LEFT,      KC_6,         KC_7,       KC_8,     KC_9,     KC_0,             M(1),
-        TG(2),        KC_Y,         KC_U,       KC_I,     KC_O,     KC_P,             M(2),
+        KC_LEFT,      KC_6,         KC_7,       KC_8,     KC_9,     KC_0,             AUTOBRACES,
+        TG(MDIA),     KC_Y,         KC_U,       KC_I,     KC_O,     KC_P,             AUTOBRACKETS,
                       KC_H,         KC_J,       KC_K,     KC_L,     LT(2,KC_SCOLON),  KC_MINUS,
         KC_LEFT,      KC_N,         KC_M,       KC_COMMA, KC_DOT,   CTL_T(KC_SLASH),  KC_RSHIFT,
                                     KC_LEFT,    KC_UP,    KC_DOWN,  KC_RIGHT,         KC_CAPS,
 
         KC_MINUS,   KC_BSLS,
         KC_RIGHT,
-        LT(1, KC_LANG1),   KC_BSPACE,        KC_ENTER
+        KC_LANG1,   KC_BSPACE,        KC_ENTER
     ),
 /* Keymap 1: Symbol Layer
  *
@@ -158,11 +160,24 @@ const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt)
           SEND_STRING (QMK_KEYBOARD "/" QMK_KEYMAP " @ " QMK_VERSION);
         }
         break;
+
         case 1:
         if (record->event.pressed) { // For resetting EEPROM
           eeconfig_init();
         }
         break;
+
+        // case AUTOBRACES:
+        // if (record->event.pressed) {
+        //     return MACRO(D(LSFT), T(LBRACKET), T(RBRACKET), U(LSFT), END); // {}
+        // }
+        // // break;
+
+        // case AUTOBRACKETS:
+        // if (record->event.pressed) {
+        //     return MACRO(T(LBRACKET), T(RBRACKET), END); // []
+        // }
+        // break;
       }
     return MACRO_NONE;
 };
